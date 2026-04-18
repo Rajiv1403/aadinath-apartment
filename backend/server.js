@@ -1,0 +1,58 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config();
+
+const Complaint = require('./model');
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// Uploads folder
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+app.use('/uploads', express.static(uploadDir));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+});
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
+// Submit complaint
+app.post('/api/complaints', upload.single('image'), async (req, res) => {
+  try {
+    const data = { ...req.body };
+    if (req.file) data.image = req.file.filename;
+    const complaint = await Complaint.create(data);
+    res.status(201).json(complaint);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Get all complaints (manager)
+app.get('/api/complaints', async (req, res) => {
+  const complaints = await Complaint.find().sort({ createdAt: -1 });
+  res.json(complaints);
+});
+
+// Update status
+app.patch('/api/complaints/:id', async (req, res) => {
+  const complaint = await Complaint.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+  res.json(complaint);
+});
+
+// Delete complaint
+app.delete('/api/complaints/:id', async (req, res) => {
+  await Complaint.findByIdAndDelete(req.params.id);
+  res.json({ message: 'Deleted' });
+});
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`)))
+  .catch(err => console.error(err));
