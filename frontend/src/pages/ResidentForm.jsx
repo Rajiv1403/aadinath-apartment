@@ -50,7 +50,7 @@ export default function ResidentForm() {
       const data = new FormData();
       Object.entries(form).forEach(([k, v]) => data.append(k, v));
       if (image) data.append('image', image);
-      await axios.post('http://localhost:5000/api/complaints', data);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/complaints`, data);
       setSubmitted(true);
     } catch {
       setError('Failed to submit. Please try again.');

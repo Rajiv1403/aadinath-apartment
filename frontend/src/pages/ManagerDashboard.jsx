@@ -21,20 +21,20 @@ export default function ManagerDashboard() {
   const inputBg = dark ? '#162030' : '#f8f9ff';
 
   const fetchComplaints = async () => {
-    const res = await axios.get('http://localhost:5000/api/complaints');
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/complaints`);
     setComplaints(res.data);
   };
 
   useEffect(() => { fetchComplaints(); }, []);
 
   const updateStatus = async (id, status) => {
-    await axios.patch(`http://localhost:5000/api/complaints/${id}`, { status });
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/complaints/${id}`, { status });
     fetchComplaints();
   };
 
   const deleteComplaint = async (id) => {
     if (window.confirm('Delete this complaint?')) {
-      await axios.delete(`http://localhost:5000/api/complaints/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/complaints/${id}`);
       fetchComplaints();
     }
   };
@@ -126,9 +126,9 @@ export default function ManagerDashboard() {
               <p style={{ color: textColor, fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '12px', padding: '10px', background: dark ? '#162030' : '#f8f9ff', borderRadius: '8px', borderLeft: `3px solid #6c63ff` }}>{c.description}</p>
 
               {c.image && (
-                <img src={`http://localhost:5000/uploads/${c.image}`} alt="problem"
+                <img src={`${import.meta.env.VITE_API_URL}/uploads/${c.image}`} alt="problem"
                   style={{ width: '100%', maxHeight: '170px', objectFit: 'cover', borderRadius: '10px', cursor: 'pointer', marginBottom: '10px', border: `1px solid ${borderColor}` }}
-                  onClick={() => setSelectedImage(`http://localhost:5000/uploads/${c.image}`)} />
+                  onClick={() => setSelectedImage(`${import.meta.env.VITE_API_URL}/uploads/${c.image}`)} />
               )}
 
               <div style={{ color: subColor, fontSize: '0.76rem', marginBottom: '14px' }}>🕐 {new Date(c.createdAt).toLocaleString()}</div>
