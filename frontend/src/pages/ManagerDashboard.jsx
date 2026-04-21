@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { DarkModeContext } from '../App';
+import ManagerLogin from './ManagerLogin';
 
 const STATUS_COLORS = { Pending: '#ff6b6b', 'In Progress': '#ffa94d', Resolved: '#51cf66' };
 const STATUS_BG = { Pending: '#ff6b6b22', 'In Progress': '#ffa94d22', Resolved: '#51cf6622' };
@@ -9,6 +10,7 @@ const TYPE_COLORS = { Plumber: '#4cc9f0', Carpenter: '#f77f00', Electrician: '#f
 
 export default function ManagerDashboard() {
   const dark = useContext(DarkModeContext);
+  const [auth, setAuth] = useState(!!localStorage.getItem('managerAuth'));
   const [complaints, setComplaints] = useState([]);
   const [filter, setFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
@@ -25,7 +27,9 @@ export default function ManagerDashboard() {
     setComplaints(res.data);
   };
 
-  useEffect(() => { fetchComplaints(); }, []);
+  useEffect(() => { if (auth) fetchComplaints(); }, [auth]);
+
+  if (!auth) return <ManagerLogin onLogin={() => setAuth(true)} />;
 
   const updateStatus = async (id, status) => {
     await axios.patch(`${import.meta.env.VITE_API_URL}/api/complaints/${id}`, { status });
@@ -56,6 +60,7 @@ export default function ManagerDashboard() {
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: '800', background: 'linear-gradient(90deg,#6c63ff,#48cae4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>📊 Manager Dashboard</h2>
         <p style={{ color: subColor, marginTop: '6px' }}>Manage and resolve all apartment complaints</p>
+        <button onClick={() => { localStorage.removeItem('managerAuth'); setAuth(false); }} style={{ marginTop: '10px', padding: '7px 18px', background: '#ff6b6b22', color: '#ff6b6b', border: '1.5px solid #ff6b6b44', borderRadius: '20px', cursor: 'pointer', fontWeight: '700', fontSize: '0.82rem' }}>🚪 Logout</button>
       </div>
 
       {/* Stats */}

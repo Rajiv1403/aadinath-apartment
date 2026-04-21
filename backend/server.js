@@ -23,6 +23,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
+// Manager Login
+app.post('/api/manager/login', (req, res) => {
+  const { phone, password } = req.body;
+  if (phone === process.env.MANAGER_PHONE && password === process.env.MANAGER_PASSWORD) {
+    res.json({ success: true, token: 'manager-authenticated' });
+  } else {
+    res.status(401).json({ success: false, message: 'Invalid phone or password' });
+  }
+});
+
 // Submit complaint
 app.post('/api/complaints', upload.single('image'), async (req, res) => {
   try {
