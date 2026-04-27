@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import { useState, useEffect, createContext } from 'react';
 import ResidentForm from './pages/ResidentForm';
 import ManagerDashboard from './pages/ManagerDashboard';
+import TrackComplaint from './pages/TrackComplaint';
 
 export const DarkModeContext = createContext(false);
 
@@ -15,6 +16,7 @@ function Navbar({ dark, setDark }) {
       </div>
       <div style={styles.navLinks}>
         <Link to="/" style={{ ...styles.link, background: location.pathname === '/' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🏠 Report Problem</Link>
+        <Link to="/track" style={{ ...styles.link, background: location.pathname === '/track' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🔍 Track Complaint</Link>
         <Link to="/manager" style={{ ...styles.link, background: location.pathname === '/manager' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>📊 Manager Dashboard</Link>
         <button onClick={() => setDark(!dark)} style={styles.toggleBtn}>
           {dark ? '☀️ Light' : '🌙 Dark'}
@@ -42,6 +44,7 @@ export default function App() {
         <Navbar dark={dark} setDark={setDark} />
         <Routes>
           <Route path="/" element={<ResidentForm />} />
+          <Route path="/track" element={<TrackComplaint />} />
           <Route path="/manager" element={<ManagerDashboard />} />
         </Routes>
       </BrowserRouter>

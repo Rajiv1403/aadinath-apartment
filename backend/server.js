@@ -45,6 +45,12 @@ app.post('/api/complaints', upload.single('image'), async (req, res) => {
   }
 });
 
+// Track complaints by phone number
+app.get('/api/complaints/track/:phone', async (req, res) => {
+  const complaints = await Complaint.find({ phone: req.params.phone }).sort({ createdAt: -1 });
+  res.json(complaints);
+});
+
 // Get all complaints (manager)
 app.get('/api/complaints', async (req, res) => {
   const complaints = await Complaint.find().sort({ createdAt: -1 });
