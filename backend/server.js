@@ -7,12 +7,12 @@ const fs = require('fs');
 require('dotenv').config();
 
 const Complaint = require('./model');
+const { Notice } = require('./model');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Uploads folder
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 app.use('/uploads', express.static(uploadDir));
@@ -45,27 +45,45 @@ app.post('/api/complaints', upload.single('image'), async (req, res) => {
   }
 });
 
-// Track complaints by phone number
+// Track complaints by phone
 app.get('/api/complaints/track/:phone', async (req, res) => {
   const complaints = await Complaint.find({ phone: req.params.phone }).sort({ createdAt: -1 });
   res.json(complaints);
 });
 
-// Get all complaints (manager)
+// Get all complaints
 app.get('/api/complaints', async (req, res) => {
-  const complaints = await Complaint.find().sort({ createdAt: -1 });
+  const complaints = await Complaint.find().sort({ priority: 1, createdAt: -1 });
   res.json(complaints);
 });
 
-// Update status
+// Update complaint (status, reply, worker, priority)
 app.patch('/api/complaints/:id', async (req, res) => {
-  const complaint = await Complaint.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+  const complaint = await Complaint.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.json(complaint);
 });
 
 // Delete complaint
 app.delete('/api/complaints/:id', async (req, res) => {
   await Complaint.findByIdAndDelete(req.params.id);
+  res.json({ message: 'Deleted' });
+});
+
+// Get all notices
+app.get('/api/notices', async (req, res) => {
+  const notices = await Notice.find().sort({ createdAt: -1 });
+  res.json(notices);
+});
+
+// Create notice
+app.post('/api/notices', async (req, res) => {
+  const notice = await Notice.create(req.body);
+  res.status(201).json(notice);
+});
+
+// Delete notice
+app.delete('/api/notices/:id', async (req, res) => {
+  await Notice.findByIdAndDelete(req.params.id);
   res.json({ message: 'Deleted' });
 });
 

@@ -107,6 +107,22 @@ export default function TrackComplaint() {
 
           <p style={{ color: textColor, fontSize: '0.88rem', lineHeight: '1.5', padding: '10px', background: inputBg, borderRadius: '8px', borderLeft: '3px solid #6c63ff', marginBottom: '10px' }}>{c.description}</p>
 
+          {/* Manager Reply */}
+          {c.managerReply && (
+            <div style={{ background: '#6c63ff22', border: '1px solid #6c63ff44', borderRadius: '8px', padding: '10px 14px', marginBottom: '10px' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#6c63ff', marginBottom: '4px' }}>💬 MANAGER REPLY</div>
+              <p style={{ color: textColor, fontSize: '0.88rem', margin: 0 }}>{c.managerReply}</p>
+            </div>
+          )}
+
+          {/* Assigned Worker */}
+          {c.assignedWorker && (
+            <div style={{ background: '#51cf6622', border: '1px solid #51cf6644', borderRadius: '8px', padding: '10px 14px', marginBottom: '10px' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#51cf66', marginBottom: '4px' }}>👷 ASSIGNED WORKER</div>
+              <p style={{ color: textColor, fontSize: '0.88rem', margin: 0 }}>{c.assignedWorker} {c.assignedWorkerPhone && `| 📞 ${c.assignedWorkerPhone}`}</p>
+            </div>
+          )}
+
           <div style={{ color: subColor, fontSize: '0.76rem' }}>🕐 Submitted: {new Date(c.createdAt).toLocaleString()}</div>
         </div>
       ))}

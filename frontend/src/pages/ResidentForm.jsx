@@ -10,7 +10,7 @@ const TYPE_COLORS = { Plumber: '#4cc9f0', Carpenter: '#f77f00', Electrician: '#f
 
 export default function ResidentForm() {
   const dark = useContext(DarkModeContext);
-  const [form, setForm] = useState({ flatNumber: '', wing: '', floor: '', residentName: '', phone: '', problemType: '', description: '' });
+  const [form, setForm] = useState({ flatNumber: '', wing: '', floor: '', residentName: '', phone: '', problemType: '', description: '', priority: 'Normal' });
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -60,7 +60,7 @@ export default function ResidentForm() {
 
   const resetForm = () => {
     setSubmitted(false);
-    setForm({ flatNumber: '', wing: '', floor: '', residentName: '', phone: '', problemType: '', description: '' });
+    setForm({ flatNumber: '', wing: '', floor: '', residentName: '', phone: '', problemType: '', description: '', priority: 'Normal' });
     setImage(null);
     setPreview(null);
   };
@@ -94,6 +94,20 @@ export default function ResidentForm() {
                 style={{ padding: '14px 10px', borderRadius: '12px', textAlign: 'center', cursor: 'pointer', border: `2px solid ${form.problemType === t ? TYPE_COLORS[t] : dark ? '#2e3f55' : '#e8e8e8'}`, background: form.problemType === t ? `${TYPE_COLORS[t]}22` : dark ? '#162030' : '#f8f9ff', transition: 'all 0.2s', transform: form.problemType === t ? 'scale(1.04)' : 'scale(1)' }}>
                 <div style={{ fontSize: '1.8rem' }}>{TYPE_ICONS[t]}</div>
                 <div style={{ fontWeight: '700', fontSize: '0.85rem', marginTop: '6px', color: form.problemType === t ? TYPE_COLORS[t] : dark ? '#a0b4c8' : '#555' }}>{t}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Priority Selector */}
+        <div style={{ ...card, marginBottom: '24px' }}>
+          <h3 style={{ marginBottom: '16px', fontSize: '1rem', fontWeight: '700', color: dark ? '#a0b4c8' : '#555', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Priority Level *</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+            {[{ key: 'Urgent', icon: '🔴', color: '#ff6b6b' }, { key: 'Normal', icon: '🟡', color: '#ffa94d' }, { key: 'Low', icon: '🟢', color: '#51cf66' }].map(({ key, icon, color }) => (
+              <div key={key} onClick={() => setForm({ ...form, priority: key })}
+                style={{ padding: '14px 10px', borderRadius: '12px', textAlign: 'center', cursor: 'pointer', border: `2px solid ${form.priority === key ? color : dark ? '#2e3f55' : '#e8e8e8'}`, background: form.priority === key ? `${color}22` : dark ? '#162030' : '#f8f9ff', transition: 'all 0.2s', transform: form.priority === key ? 'scale(1.04)' : 'scale(1)' }}>
+                <div style={{ fontSize: '1.8rem' }}>{icon}</div>
+                <div style={{ fontWeight: '700', fontSize: '0.85rem', marginTop: '6px', color: form.priority === key ? color : dark ? '#a0b4c8' : '#555' }}>{key}</div>
               </div>
             ))}
           </div>

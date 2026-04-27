@@ -3,6 +3,7 @@ import { useState, useEffect, createContext } from 'react';
 import ResidentForm from './pages/ResidentForm';
 import ManagerDashboard from './pages/ManagerDashboard';
 import TrackComplaint from './pages/TrackComplaint';
+import NoticeBoard from './pages/NoticeBoard';
 
 export const DarkModeContext = createContext(false);
 
@@ -15,9 +16,10 @@ function Navbar({ dark, setDark }) {
         <span style={styles.brandText}>Aadinath Apartment</span>
       </div>
       <div style={styles.navLinks}>
-        <Link to="/" style={{ ...styles.link, background: location.pathname === '/' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🏠 Report Problem</Link>
-        <Link to="/track" style={{ ...styles.link, background: location.pathname === '/track' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🔍 Track Complaint</Link>
-        <Link to="/manager" style={{ ...styles.link, background: location.pathname === '/manager' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>📊 Manager Dashboard</Link>
+        <Link to="/" style={{ ...styles.link, background: location.pathname === '/' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🏠 Report</Link>
+        <Link to="/track" style={{ ...styles.link, background: location.pathname === '/track' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🔍 Track</Link>
+        <Link to="/notices" style={{ ...styles.link, background: location.pathname === '/notices' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>📢 Notices</Link>
+        <Link to="/manager" style={{ ...styles.link, background: location.pathname === '/manager' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>📊 Manager</Link>
         <button onClick={() => setDark(!dark)} style={styles.toggleBtn}>
           {dark ? '☀️ Light' : '🌙 Dark'}
         </button>
@@ -45,6 +47,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<ResidentForm />} />
           <Route path="/track" element={<TrackComplaint />} />
+          <Route path="/notices" element={<NoticeBoard />} />
           <Route path="/manager" element={<ManagerDashboard />} />
         </Routes>
       </BrowserRouter>
