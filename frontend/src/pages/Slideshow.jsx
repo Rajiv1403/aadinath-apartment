@@ -40,7 +40,7 @@ export default function Slideshow() {
 
       {/* Overlay text */}
       <div style={styles.overlay}>
-        <h1 style={styles.heading}>🏢 Aadinath Apartment</h1>
+        <h1 style={styles.heading}>🏢 Shree Annpurna Aadinath</h1>
         <p style={styles.subtext}>Report your problems easily — we resolve them quickly</p>
       </div>
     </div>

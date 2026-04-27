@@ -13,7 +13,7 @@ function Navbar({ dark, setDark }) {
     <nav style={{ ...styles.nav, background: dark ? 'linear-gradient(90deg,#1a1a2e,#16213e)' : 'linear-gradient(90deg,#6c63ff,#48cae4)', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
       <div style={styles.brand}>
         <span style={styles.brandIcon}>🏢</span>
-        <span style={styles.brandText}>Aadinath Apartment</span>
+        <span style={styles.brandText}>Shree Annpurna Aadinath</span>
       </div>
       <div style={styles.navLinks}>
         <Link to="/" style={{ ...styles.link, background: location.pathname === '/' ? 'rgba(255,255,255,0.25)' : 'transparent' }}>🏠 Report</Link>
